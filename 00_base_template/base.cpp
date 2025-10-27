@@ -2,19 +2,29 @@
 
 using namespace std;
 
-#define ll long long
 #define ar array
 #define all(x) (x).begin(), (x).end()
 #define rall(x) (x).rbegin(), (x).rend()
 #define rep(i, a, b) for (int i = (a); i < (b); ++i)
-#define F first
-#define S second
+#define fi first
+#define se second
 #define PB push_back
 #define MP make_pair
 
+using ll = long long;
+using pii = pair<int, int>;
+using pll = pair<ll, ll>;
+using vi = vector<int>;
+using vll = vector<ll>;
+
+using ld = long double;
+using vpii = vector<pii>;      // vector<pair<int, int>>
+using vpll = vector<pll>;      // vector<pair<long long, long long>>
+using vvi = vector<vi>;        // vector<vector<int>>
+
 const int MAX_N = 1e5 + 5;
-const ll MOD = 1e9 + 7;
-const ll INF = 1e9;
+const long long MOD = 1e9 + 7;
+const long long INF = 1e9;
 
 void fast_io() {
     ios_base::sync_with_stdio(0);
