@@ -137,4 +137,55 @@ struct DataStructures {
             return f(st[k][l], st[k][r - (1 << k) + 1]);
         }
     };
+
+    // ================= LICHAO TREE (Convex-Hull trick) ==============================
+    struct Line {
+        int a, b;
+        Line(int _a = 0, int _b = (long long)1e18) : a(_a), b(_b) {}
+    };
+
+    struct LichaoTree {
+        const int MAXX;
+        vector<Line> tree;
+
+        LichaoTree(int _MAXX) : MAXX(_MAXX) {
+            tree.assign(4 * MAXX + 5, Line());
+        }
+
+        int f(const Line& line, int x) {
+            return line.a * x + line.b;
+        }
+
+        void update(int id, int l, int r, Line line) {
+            int mid = (l + r) / 2;
+            bool left = f(tree[id], l) < f(line, l);
+            bool m = f(tree[id], mid) < f(line, mid);
+
+            if (!m) swap(tree[id], line);
+
+            if (l == r - 1) return;
+
+            if (left != m) update(id * 2, l, mid, line);
+            else update(id * 2 + 1, mid, r, line);
+        }
+
+        int get(int id, int l, int r, int x) {
+            int mid = (l + r) / 2;
+            int ans = f(tree[id], x);
+
+            if (l == r - 1) return ans;
+
+            if (x < mid) return min(ans, get(id * 2, l, mid, x));
+            else return min(ans, get(id * 2 + 1, mid, r, x));
+        }
+
+        
+        void addLine(Line line) {
+            update(1, 1, MAXX, line);
+        }
+
+        int query(int x) {
+            return get(1, 1, MAXX, x);
+        }
+    };
 };
