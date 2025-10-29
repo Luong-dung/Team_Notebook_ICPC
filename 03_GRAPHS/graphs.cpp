@@ -229,6 +229,78 @@ vi kahn_topo_sort() {
     return topo_order;
 }
 
+// ========================================
+// 7. LCA
+// ========================================
+    template<typename T, class F = function<T(const T&, const T&)>>
+    struct LCA {
+        int n, LOG;
+        vector<vector<int>> parent;
+        vector<vector<T>> val;
+        vector<int> depth;
+        vector<vector<pair<int, T>>> adj;
+        F func; // hàm gộp (vd: max, min, cộng)
+        T identity; // giá trị đơn vị (vd: -inf, +inf, 0,...)
+
+        LCA(int n, F func, T identity) : n(n), func(func), identity(identity) {
+            LOG = 1;
+            while ((1 << LOG) <= n) LOG++;
+            parent.assign(LOG, vector<int>(n + 1, 0));
+            val.assign(LOG, vector<T>(n + 1, identity));
+            depth.assign(n + 1, 0);
+            adj.assign(n + 1, {});
+        }
+
+        void addEdge(int u, int v, T w) {
+            adj[u].push_back({v, w});
+            adj[v].push_back({u, w});
+        }
+
+        void dfs(int u, int p) {
+            for (auto [v, w] : adj[u]) {
+                if (v == p) continue;
+                parent[0][v] = u;
+                val[0][v] = w;
+                depth[v] = depth[u] + 1;
+                dfs(v, u);
+            }
+        }
+
+        void build(int root = 1) {
+            dfs(root, 0);
+            for (int k = 1; k < LOG; k++) {
+                for (int u = 1; u <= n; u++) {
+                    int mid = parent[k - 1][u];
+                    parent[k][u] = parent[k - 1][mid];
+                    val[k][u] = func(val[k - 1][u], val[k - 1][mid]);
+                }
+            }
+        }
+
+        T query(int u, int v) {
+            if (u == v) return identity;
+            T res = identity;
+            if (depth[u] < depth[v]) swap(u, v);
+            int diff = depth[u] - depth[v];
+            for (int k = LOG - 1; k >= 0; k--) {
+                if ((diff >> k) & 1) {
+                    res = func(res, val[k][u]);
+                    u = parent[k][u];
+                }
+            }
+            if (u == v) return res;
+            for (int k = LOG - 1; k >= 0; k--) {
+                if (parent[k][u] != parent[k][v]) {
+                    res = func(res, func(val[k][u], val[k][v]));
+                    u = parent[k][u];
+                    v = parent[k][v];
+                }
+            }
+            return func(res, func(val[0][u], val[0][v]));
+        }
+    };
+
+
 /**
  * ========================================
  * HÀM SOLVE()
@@ -300,6 +372,28 @@ void solve() {
     //     }
     //     cout << "\n";
     // }
+
+
+    // Ví dụ 7 : LCA
+    /*
+        lca(số đỉnh tối đa, hàm muốn thực hiện vs mảng val, giá trị khởi tạo)
+        LCA<int> lca(n, [](int a, int b){ return max(a, b); }, (int)-1e18);
+
+        for (int i = 1; i < n; i++) {
+            int u, v, w;
+            cin >> u >> v >> w;
+            lca.addEdge(u, v, w);
+        }
+
+        lca.build(1);
+
+        while (q--) {
+            int u, v;
+            cin >> u >> v;
+            cout << lca.query(u, v) << "\n";
+        }
+        
+    */
 }
 
 /**
