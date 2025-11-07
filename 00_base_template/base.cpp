@@ -29,7 +29,11 @@ const ll MOD1 = 1e9 + 7;
 const ll MOD2 = 1e9 + 9;
 const int BASE = 31; // Hoặc 53, 313, 331,... (số nguyên tố)
 const int MAXN = 1e6 + 5; // Kích thước tối đa, thay đổi nếu cần
-
+mt19937 rng(chrono::high_resolution_clock::now().time_since_epoch().count());
+ll rand(ll left,ll right){
+    uniform_int_distribution<int> rd(left,right);
+    return rd(rng);
+}
 void fast_io() {
     ios_base::sync_with_stdio(0);
     cin.tie(0);
