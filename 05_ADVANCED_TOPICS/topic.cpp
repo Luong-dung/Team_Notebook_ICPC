@@ -54,12 +54,9 @@ ll binpow(ll a, ll b, ll m) {
     return res;
 }
 */
-
 struct Matrix {
-    int dim;
-    vector<vll> mat;
+    int dim;vector<vll> mat;
     Matrix(int _dim) : dim(_dim), mat(_dim, vll(_dim, 0)) {}
-
     // Phép nhân ma trận
     Matrix operator*(const Matrix& other) const {
         Matrix result(dim);
@@ -72,7 +69,6 @@ struct Matrix {
         }
         return result;
     }
-    
     // Tạo ma trận đơn vị
     static Matrix identity(int dim) {
         Matrix I(dim);
@@ -80,7 +76,6 @@ struct Matrix {
         return I;
     }
 };
-
 // Lũy thừa ma trận (dùng binpow)
 Matrix matrix_pow(Matrix a, ll b) {
     Matrix res = Matrix::identity(a.dim);
@@ -91,10 +86,7 @@ Matrix matrix_pow(Matrix a, ll b) {
     }
     return res;
 }
-
-// ========================================
 // 2. DINIC'S ALGORITHM (MAX FLOW)
-// ========================================
 struct Edge {
     int to;
     ll cap;  // Khả năng thông qua
@@ -103,9 +95,7 @@ struct Edge {
 };
 
 struct Dinic {
-    int n;
-    vector<vector<Edge>> adj;
-    vi level; // Đồ thị mức (cho BFS)
+    int n;vector<vector<Edge>> adj;vi level; // Đồ thị mức (cho BFS)
     vi ptr;   // Con trỏ (cho DFS)
 
     Dinic(int _n) : n(_n), adj(_n) {}
@@ -116,7 +106,6 @@ struct Dinic {
         adj[u].pb(fwd);
         adj[v].pb(bwd);
     }
-
     // Xây dựng đồ thị mức
     bool bfs(int s, int t) {
         level.assign(n, -1);
@@ -135,7 +124,6 @@ struct Dinic {
         }
         return level[t] != -1;
     }
-
     // Đẩy luồng bằng DFS
     ll dfs(int u, int t, ll pushed) {
         if (pushed == 0) return 0;
@@ -155,7 +143,6 @@ struct Dinic {
         }
         return 0;
     }
-
     // Tính luồng cực đại từ s đến t
     ll max_flow(int s, int t) {
         ll total_flow = 0;
@@ -168,14 +155,6 @@ struct Dinic {
         return total_flow;
     }
 };
-
-
-/**
- * ========================================
- * HÀM SOLVE()
- * Nơi đọc input và gọi các thuật toán
- * ========================================
- */
 void solve() {
     int n, m;
     cin >> n >> m;
@@ -199,25 +178,4 @@ void solve() {
     //     flow_solver.add_edge(u, v, cap);
     // }
     // cout << "Max flow = " << flow_solver.max_flow(0, n - 1) << "\n";
-
-}
-
-/**
- * ========================================
- * HÀM MAIN()
- * ========================================
- */
-int main() {
-
-    int t = 1;
-    cin >> t; // Đọc số lượng test cases
-
-    while (t--) {
-        solve();
-    }
-
-    // Nếu bài chỉ có 1 test case:
-    // solve();
-
-    return 0;
 }
