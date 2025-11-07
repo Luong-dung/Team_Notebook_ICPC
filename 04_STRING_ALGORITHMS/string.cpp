@@ -4,13 +4,9 @@ struct StringHash {
 
     StringHash(const string& s) {
         n = sz(s);
-        hash1.resize(n + 1);
-        hash2.resize(n + 1);
-        pow1.resize(n + 1);
-        pow2.resize(n + 1);
-
-        pow1[0] = pow2[0] = 1;
-        hash1[0] = hash2[0] = 0;
+        hash1.resize(n + 1);hash2.resize(n + 1);
+        pow1.resize(n + 1);pow2.resize(n + 1);
+        pow1[0] = pow2[0] = 1;hash1[0] = hash2[0] = 0;
 
         for (int i = 0; i < n; ++i) {
             pow1[i + 1] = (pow1[i] * BASE) % MOD1;
@@ -33,15 +29,12 @@ vi build_lps(const string& pattern) {
 
     while (i < m) {
         if (pattern[i] == pattern[len]) {
-            len++;
-            lps[i] = len;
-            i++;
+            len++; lps[i] = len; i++;
         } else {
             if (len != 0) {
                 len = lps[len - 1];
             } else {
-                lps[i] = 0;
-                i++;
+                lps[i] = 0; i++;
             }
         }
     }
@@ -52,13 +45,11 @@ vi kmp_search(const string& text, const string& pattern) {
     int n = sz(text);int m = sz(pattern);
     if (m == 0) return {};
     vi lps = build_lps(pattern);vi matches;
-    
     int i = 0;int j = 0; // con trỏ cho pattern
 
     while (i < n) {
         if (pattern[j] == text[i]) {
-            i++;
-            j++;
+            i++; j++;
         }
         if (j == m) {
             matches.pb(i - j); // Tìm thấy 1 match tại vị trí i - j
@@ -79,15 +70,10 @@ vi kmp_search(const string& text, const string& pattern) {
 vi z_function(const string& s) {
     int n = sz(s);vi z(n, 0);int l = 0, r = 0;
     for (int i = 1; i < n; ++i) {
-        if (i < r) {
-            z[i] = min(r - i, z[i - l]);
-        }
-        while (i + z[i] < n && s[z[i]] == s[i + z[i]]) {
-            z[i]++;
-        }
+        if (i < r) z[i] = min(r - i, z[i - l]);
+        while (i + z[i] < n && s[z[i]] == s[i + z[i]]) z[i]++;
         if (i + z[i] > r) {
-            l = i;
-            r = i + z[i];
+            l = i; r = i + z[i];
         }
     }
     return z;
@@ -214,17 +200,12 @@ void build_suffix_array(const string& s) {
     while((1 << k) < n) {
         // Sắp xếp theo cặp (c[i], c[i + 2^k])
         // Dùng counting sort (radix sort)
-        vi pn(n), cn(n);
-        vi cnt(n, 0);
+        vi pn(n), cn(n); vi cnt(n, 0);
 
-        for (int i = 0; i < n; ++i)
-            pn[i] = (sa[i] - (1 << k) + n) % n;
-        for (int i = 0; i < n; ++i)
-            cnt[c[pn[i]]]++;
-        for (int i = 1; i < n; ++i)
-            cnt[i] += cnt[i-1];
-        for (int i = n - 1; i >= 0; --i)
-            sa[--cnt[c[pn[i]]]] = pn[i];
+        for (int i = 0; i < n; ++i) pn[i] = (sa[i] - (1 << k) + n) % n;
+        for (int i = 0; i < n; ++i) cnt[c[pn[i]]]++;
+        for (int i = 1; i < n; ++i) cnt[i] += cnt[i-1];
+        for (int i = n - 1; i >= 0; --i) sa[--cnt[c[pn[i]]]] = pn[i];
 
         cn[sa[0]] = 0;
         for(int i = 1; i < n; ++i) {
@@ -253,17 +234,12 @@ void build_lcp_array(const string& s) {
     int k = 0; // k = LCP của hậu tố trước đó
     for (int i = 0; i < n - 1; ++i) { // i là vị trí bắt đầu
         if (pos[i] == n - 1) {
-            k = 0;
-            continue;
+            k = 0; continue;
         }
         int j = sa[pos[i] + 1]; // j = vị trí bắt đầu của hậu tố ngay sau
-        while (i + k < n && j + k < n && s[i + k] == s[j + k]) {
-            k++;
-        }
+        while (i + k < n && j + k < n && s[i + k] == s[j + k]) k++;
         lcp[pos[i] + 1] = k;
-        if (k > 0) {
-            k--;
-        }
+        if (k > 0) k--;
     }
     // lcp.erase(lcp.begin()); // Xóa lcp của $ nếu cần
 }
