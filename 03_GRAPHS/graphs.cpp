@@ -1,26 +1,3 @@
-using ll = long long;
-using ld = long double;
-using pii = pair<int, int>;    // pair<int, int>
-using pll = pair<ll, ll>;    // pair<long long, long long>
-using vi = vector<int>;        // vector<int>
-using vll = vector<ll>;        // vector<long long>
-using vpii = vector<pii>;      // vector<pair<int, int>>
-using vpll = vector<pll>;      // vector<pair<long long, long long>>
-using vvi = vector<vi>;        // vector<vector<int>>
-// Macros
-#define all(a) (a).begin(), (a).end()
-#define rall(a) (a).rbegin(), (a).rend()
-#define pb push_back
-#define mp make_pair
-#define sz(x) (int)(x).size()
-#define ft first
-#define sc second
-// Hằng số
-const int INF = 1e9 + 7;
-const ll LINF = 1e18 + 7;
-const int MOD = 1e9 + 7;
-const int MAXN = 2e5 + 5; // Kích thước tối đa, thay đổi nếu cần
-// BIẾN TOÀN CỤC CHO ĐỒ THỊ
 int n, m;                 // Số đỉnh, số cạnh
 vvi adj;                  // Danh sách kề (đồ thị không trọng số)
 vector<vpii> adj_weighted; // Danh sách kề (đồ thị có trọng số)
