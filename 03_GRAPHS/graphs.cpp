@@ -1,7 +1,3 @@
-#include <bits/stdc++.h>
-
-using namespace std;
-// Định nghĩa kiểu dữ liệu
 using ll = long long;
 using ld = long double;
 using pii = pair<int, int>;    // pair<int, int>
@@ -11,7 +7,6 @@ using vll = vector<ll>;        // vector<long long>
 using vpii = vector<pii>;      // vector<pair<int, int>>
 using vpll = vector<pll>;      // vector<pair<long long, long long>>
 using vvi = vector<vi>;        // vector<vector<int>>
-
 // Macros
 #define all(a) (a).begin(), (a).end()
 #define rall(a) (a).rbegin(), (a).rend()
@@ -20,23 +15,16 @@ using vvi = vector<vi>;        // vector<vector<int>>
 #define sz(x) (int)(x).size()
 #define ft first
 #define sc second
-
 // Hằng số
 const int INF = 1e9 + 7;
 const ll LINF = 1e18 + 7;
 const int MOD = 1e9 + 7;
 const int MAXN = 2e5 + 5; // Kích thước tối đa, thay đổi nếu cần
-
-// ========================================
 // BIẾN TOÀN CỤC CHO ĐỒ THỊ
-// (Dùng chung cho nhiều thuật toán)
-// ========================================
-
 int n, m;                 // Số đỉnh, số cạnh
 vvi adj;                  // Danh sách kề (đồ thị không trọng số)
 vector<vpii> adj_weighted; // Danh sách kề (đồ thị có trọng số)
 vector<bool> visited;     // Mảng đánh dấu đã thăm
-
 // Hàm reset/khởi tạo
 void init_graph(int num_nodes) {
     n = num_nodes;
@@ -44,10 +32,7 @@ void init_graph(int num_nodes) {
     adj_weighted.assign(n + 1, vpii());
     visited.assign(n + 1, false);
 }
-
-// ========================================
 // 1. DSU (DISJOINT SET UNION) / UNION-FIND
-// ========================================
 struct DSU {
     vi parent;
     vi sz; // Kích thước của mỗi tập
@@ -56,14 +41,12 @@ struct DSU {
         iota(all(parent), 0); // Gán parent[i] = i
         sz.assign(n + 1, 1);
     }
-
     // Tìm gốc của tập chứa u (có nén đường)
     int find(int u) {
         if (parent[u] == u)
             return u;
         return parent[u] = find(parent[u]);
     }
-
     // Hợp nhất hai tập chứa u và v (hợp nhất theo kích thước)
     bool unite(int u, int v) {
         int root_u = find(u);
@@ -77,12 +60,8 @@ struct DSU {
         return true;
     }
 };
-
-// ========================================
 // 2. DFS (DEPTH FIRST SEARCH)
-// ========================================
 // Dùng biến toàn cục: adj, visited
-
 void dfs(int u) {
     visited[u] = true;
     // cout << u << " "; // Xử lý đỉnh u
@@ -92,16 +71,13 @@ void dfs(int u) {
         }
     }
 }
-
-// ========================================
 // 3. BFS (BREADTH FIRST SEARCH)
-// ========================================
 // Dùng biến toàn cục: adj
 // Trả về vector khoảng cách từ start_node
 vi bfs(int start_node) {
     vi dist(n + 1, -1); // Khởi tạo khoảng cách là -1 (chưa thăm)
     queue<int> q;
-
+    
     q.push(start_node);
     dist[start_node] = 0;
     visited[start_node] = true; // Có thể dùng mảng visited toàn cục
@@ -109,9 +85,7 @@ vi bfs(int start_node) {
     while (!q.empty()) {
         int u = q.front();
         q.pop();
-
         // cout << u << " "; // Xử lý đỉnh u
-
         for (int v : adj[u]) {
             if (dist[v] == -1) { // !visited[v]
                 dist[v] = dist[u] + 1;
@@ -122,16 +96,12 @@ vi bfs(int start_node) {
     }
     return dist;
 }
-
-// ========================================
 // 4. DIJKSTRA (ĐƯỜNG ĐI NGẮN NHẤT)
-// ========================================
 // Dùng adj_weighted
 // Trả về vector khoảng cách từ start_node
 vll dijkstra(int start_node) {
     vll dist(n + 1, LINF);
     dist[start_node] = 0;
-
     // {khoảng cách, đỉnh}
     priority_queue<pll, vpll, greater<pll>> pq;
     pq.push({0, start_node});
@@ -140,11 +110,9 @@ vll dijkstra(int start_node) {
         ll d = pq.top().ft;
         int u = pq.top().sc;
         pq.pop();
-
         // Tối ưu: nếu khoảng cách đã cũ thì bỏ qua
         if (d > dist[u])
             continue;
-
         for (auto& edge : adj_weighted[u]) {
             int v = edge.ft;
             int w = edge.sc;
@@ -156,12 +124,7 @@ vll dijkstra(int start_node) {
     }
     return dist;
 }
-
-// ========================================
 // 5. KRUSKAL (MINIMUM SPANNING TREE)
-// ========================================
-
-// Cần cấu trúc Edge
 struct Edge {
     int u, v, w;
     // Sắp xếp theo trọng số tăng dần
@@ -169,7 +132,6 @@ struct Edge {
         return w < other.w;
     }
 };
-
 // Cần danh sách cạnh và DSU
 ll kruskal(vector<Edge>& edge_list, DSU& dsu) {
     sort(all(edge_list));
@@ -182,17 +144,12 @@ ll kruskal(vector<Edge>& edge_list, DSU& dsu) {
             edges_count++;
         }
     }
-
     // Kiểm tra xem có đủ n-1 cạnh không (đồ thị liên thông)
-    if (edges_count != n - 1) {
+    if (edges_count != n - 1)
         return -1; // Hoặc LINF, tùy vào bài toán
-    }
     return mst_cost;
 }
-
-// ========================================
 // 6. TOPOLOGICAL SORT (KAHN'S ALGORITHM)
-// ========================================
 // Dùng cho đồ thị có hướng (DAG)
 // Dùng biến toàn cục: adj
 vi kahn_topo_sort() {
@@ -223,15 +180,11 @@ vi kahn_topo_sort() {
             }
         }
     }
-
     // Nếu sz(topo_order) == n thì đồ thị là DAG
     // Nếu sz(topo_order) < n thì đồ thị có chu trình
     return topo_order;
 }
-
-// ========================================
 // 7. LCA
-// ========================================
     template<typename T, class F = function<T(const T&, const T&)>>
     struct LCA {
         int n, LOG;
@@ -299,10 +252,7 @@ vi kahn_topo_sort() {
             return func(res, func(val[0][u], val[0][v]));
         }
     };
-
-// ========================================
 // 8. Euler tour
-// ========================================
 int in[N], out[N], cnt = 0;
 void DFS(int u, int p){
     in[u] = ++cnt;
@@ -313,38 +263,27 @@ void DFS(int u, int p){
     }
     out[u] = cnt;
 }
-/**
- * ========================================
- * HÀM SOLVE()
- * Nơi đọc input và gọi các thuật toán
- * ========================================
- */
+/*HÀM SOLVE()*/
 void solve() {
     // Đọc số đỉnh và số cạnh
     cin >> n >> m;
-
     // Khởi tạo các cấu trúc
     init_graph(n);
-
     // Dùng cho Kruskal
     vector<Edge> edge_list;
     // Dùng cho DSU
     // DSU dsu(n); 
-
     for (int i = 0; i < m; ++i) {
         int u, v;
         // cin >> u >> v; // Đồ thị không trọng số
         int w;
         cin >> u >> v >> w; // Đồ thị có trọng số
-
         // 1. Cho đồ thị không trọng số (DFS, BFS, TopoSort)
         // adj[u].pb(v);
         // adj[v].pb(u); // Bỏ comment nếu là đồ thị vô hướng
-
         // 2. Cho đồ thị có trọng số (Dijkstra)
         adj_weighted[u].pb({v, w});
         adj_weighted[v].pb({u, w}); // Bỏ comment nếu là đồ thị vô hướng
-
         // 3. Cho Kruskal
         edge_list.pb({u, v, w});
     }
@@ -406,25 +345,4 @@ void solve() {
         }
         
     */
-}
-
-/**
- * ========================================
- * HÀM MAIN()
- * ========================================
- */
-int main() {
-    fast_io();
-
-    int t = 1;
-    cin >> t; // Đọc số lượng test cases
-
-    while (t--) {
-        solve();
-    }
-
-    // Nếu bài chỉ có 1 test case:
-    // solve();
-
-    return 0;
 }
