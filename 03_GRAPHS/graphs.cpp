@@ -4,18 +4,15 @@ vector<vpii> adj_weighted; // Danh sách kề (đồ thị có trọng số)
 vector<bool> visited;     // Mảng đánh dấu đã thăm
 // Hàm reset/khởi tạo
 void init_graph(int num_nodes) {
-    n = num_nodes;
-    adj.assign(n + 1, vi());
+    n = num_nodes;adj.assign(n + 1, vi());
     adj_weighted.assign(n + 1, vpii());
     visited.assign(n + 1, false);
 }
 // 1. DSU (DISJOINT SET UNION) / UNION-FIND
 struct DSU {
-    vi parent;
-    vi sz; // Kích thước của mỗi tập
+    vi parent;vi sz; // Kích thước của mỗi tập
     DSU(int n) {
-        parent.resize(n + 1);
-        iota(all(parent), 0); // Gán parent[i] = i
+        parent.resize(n + 1);iota(all(parent), 0); // Gán parent[i] = i
         sz.assign(n + 1, 1);
     }
     // Tìm gốc của tập chứa u (có nén đường)
@@ -26,8 +23,7 @@ struct DSU {
     }
     // Hợp nhất hai tập chứa u và v (hợp nhất theo kích thước)
     bool unite(int u, int v) {
-        int root_u = find(u);
-        int root_v = find(v);
+        int root_u = find(u);int root_v = find(v);
         if (root_u == root_v)
             return false; // Đã cùng một tập
         if (sz[root_u] < sz[root_v])
@@ -54,9 +50,7 @@ void dfs(int u) {
 vi bfs(int start_node) {
     vi dist(n + 1, -1); // Khởi tạo khoảng cách là -1 (chưa thăm)
     queue<int> q;
-    
-    q.push(start_node);
-    dist[start_node] = 0;
+    q.push(start_node);dist[start_node] = 0;
     visited[start_node] = true; // Có thể dùng mảng visited toàn cục
 
     while (!q.empty()) {
@@ -65,9 +59,7 @@ vi bfs(int start_node) {
         // cout << u << " "; // Xử lý đỉnh u
         for (int v : adj[u]) {
             if (dist[v] == -1) { // !visited[v]
-                dist[v] = dist[u] + 1;
-                visited[v] = true;
-                q.push(v);
+                dist[v] = dist[u] + 1;visited[v] = true;q.push(v);
             }
         }
     }
@@ -112,8 +104,7 @@ struct Edge {
 // Cần danh sách cạnh và DSU
 ll kruskal(vector<Edge>& edge_list, DSU& dsu) {
     sort(all(edge_list));
-    ll mst_cost = 0;
-    int edges_count = 0;
+    ll mst_cost = 0;int edges_count = 0;
 
     for (const auto& edge : edge_list) {
         if (dsu.unite(edge.u, edge.v)) {
@@ -240,21 +231,15 @@ void DFS(int u, int p){
     }
     out[u] = cnt;
 }
-/*HÀM SOLVE()*/
 void solve() {
-    // Đọc số đỉnh và số cạnh
     cin >> n >> m;
-    // Khởi tạo các cấu trúc
     init_graph(n);
     // Dùng cho Kruskal
     vector<Edge> edge_list;
     // Dùng cho DSU
     // DSU dsu(n); 
     for (int i = 0; i < m; ++i) {
-        int u, v;
-        // cin >> u >> v; // Đồ thị không trọng số
-        int w;
-        cin >> u >> v >> w; // Đồ thị có trọng số
+        int u, v;int w;cin >> u >> v >> w; // Đồ thị có trọng số
         // 1. Cho đồ thị không trọng số (DFS, BFS, TopoSort)
         // adj[u].pb(v);
         // adj[v].pb(u); // Bỏ comment nếu là đồ thị vô hướng
@@ -274,15 +259,13 @@ void solve() {
     // // Ví dụ 2: Chạy BFS từ đỉnh 1 và in khoảng cách
     // fill(all(visited), false);
     // vi dist_bfs = bfs(1);
-    // for (int i = 1; i <= n; ++i) {
+    // for (int i = 1; i <= n; ++i)
     //     cout << "Dist from 1 to " << i << " = " << dist_bfs[i] << "\n";
-    // }
 
     // // Ví dụ 3: Chạy Dijkstra từ đỉnh 1 và in khoảng cách
     // vll dist_dijkstra = dijkstra(1);
-    // for (int i = 1; i <= n; ++i) {
+    // for (int i = 1; i <= n; ++i) 
     //     cout << "Shortest path from 1 to " << i << " = " << dist_dijkstra[i] << "\n";
-    // }
 
     // // Ví dụ 4: Chạy Kruskal
     // DSU dsu_kruskal(n);
@@ -295,31 +278,22 @@ void solve() {
     //     cout << "Graph has a cycle!\n";
     // } else {
     //     cout << "Topo order: ";
-    //     for (int node : topo_order) {
+    //     for (int node : topo_order)
     //         cout << node << " ";
-    //     }
     //     cout << "\n";
     // }
 
-
     // Ví dụ 7 : LCA
-    /*
-        lca(số đỉnh tối đa, hàm muốn thực hiện vs mảng val, giá trị khởi tạo)
+    /*  lca(số đỉnh tối đa, hàm muốn thực hiện vs mảng val, giá trị khởi tạo)
         LCA<int> lca(n, [](int a, int b){ return max(a, b); }, (int)-1e18);
 
         for (int i = 1; i < n; i++) {
-            int u, v, w;
-            cin >> u >> v >> w;
+            int u, v, w;cin >> u >> v >> w;
             lca.addEdge(u, v, w);
         }
-
         lca.build(1);
-
         while (q--) {
-            int u, v;
-            cin >> u >> v;
+            int u, v;cin >> u >> v;
             cout << lca.query(u, v) << "\n";
-        }
-        
-    */
+        }*/
 }
