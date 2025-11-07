@@ -1,29 +1,23 @@
 // 1. MATRIX EXPONENTIATION
-/*
-ll binpow(ll a, ll b, ll m) {
+/*ll binpow(ll a, ll b, ll m) {
     a %= m;
     ll res = 1;
     while (b > 0) {
         if (b & 1) res = (res * a) % m;
-        a = (a * a) % m;
-        b >>= 1;
+        a = (a * a) % m;b >>= 1;
     }
     return res;
-}
-*/
+}*/
 struct Matrix {
     int dim;vector<vll> mat;
     Matrix(int _dim) : dim(_dim), mat(_dim, vll(_dim, 0)) {}
     // Phép nhân ma trận
     Matrix operator*(const Matrix& other) const {
         Matrix result(dim);
-        for (int i = 0; i < dim; ++i) {
-            for (int j = 0; j < dim; ++j) {
-                for (int k = 0; k < dim; ++k) {
+        for (int i = 0; i < dim; ++i) 
+            for (int j = 0; j < dim; ++j) 
+                for (int k = 0; k < dim; ++k) 
                     result.mat[i][j] = (result.mat[i][j] + mat[i][k] * other.mat[k][j]) % MOD;
-                }
-            }
-        }
         return result;
     }
     // Tạo ma trận đơn vị
@@ -38,22 +32,18 @@ Matrix matrix_pow(Matrix a, ll b) {
     Matrix res = Matrix::identity(a.dim);
     while (b > 0) {
         if (b & 1) res = res * a;
-        a = a * a;
-        b >>= 1;
+        a = a * a;b >>= 1;
     }
     return res;
 }
 // 2. DINIC'S ALGORITHM (MAX FLOW)
 struct Edge {
-    int to;
-    ll cap;  // Khả năng thông qua
-    ll flow; // Luồng hiện tại
-    int rev; // Chỉ số của cạnh ngược
+    int to;ll cap;  // Khả năng thông qua
+    ll flow;int rev; // Chỉ số của cạnh ngược
 };
 struct Dinic {
     int n;vector<vector<Edge>> adj;vi level; // Đồ thị mức (cho BFS)
     vi ptr;   // Con trỏ (cho DFS)
-
     Dinic(int _n) : n(_n), adj(_n) {}
 
     void add_edge(int u, int v, ll cap) {
@@ -64,8 +54,7 @@ struct Dinic {
     }
     // Xây dựng đồ thị mức
     bool bfs(int s, int t) {
-        level.assign(n, -1);
-        level[s] = 0;
+        level.assign(n, -1);level[s] = 0;
         queue<int> q;
         q.push(s);
         while (!q.empty()) {
@@ -86,8 +75,7 @@ struct Dinic {
         if (u == t) return pushed;
         
         for (int& cid = ptr[u]; cid < sz(adj[u]); ++cid) {
-            auto& edge = adj[u][cid];
-            int v = edge.to;
+            auto& edge = adj[u][cid];int v = edge.to;
             if (level[u] + 1 != level[v] || edge.cap - edge.flow == 0) continue;
             
             ll tr = dfs(v, t, min(pushed, edge.cap - edge.flow));
@@ -104,9 +92,7 @@ struct Dinic {
         ll total_flow = 0;
         while (bfs(s, t)) {
             ptr.assign(n, 0);
-            while (ll pushed = dfs(s, t, LINF)) {
-                total_flow += pushed;
-            }
+            while (ll pushed = dfs(s, t, LINF)) total_flow += pushed;
         }
         return total_flow;
     }
