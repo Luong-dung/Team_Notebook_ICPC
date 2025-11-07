@@ -1,17 +1,3 @@
-using ll = long long;
-using pii = pair<int, int>;
-using pll = pair<ll, ll>;
-using vi = vector<int>;
-using vll = vector<ll>;
-// Macros
-#define all(a) (a).begin(), (a).end()
-#define pb push_back
-#define sz(x) (int)(x).size()
-// Hằng số
-const ll MOD1 = 1e9 + 7;
-const ll MOD2 = 1e9 + 9;
-const int BASE = 31; // Hoặc 53, 313, 331,... (số nguyên tố)
-const int MAXN = 1e6 + 5; // Kích thước tối đa, thay đổi nếu cần
 // 1. STRING HASHING (DOUBLE HASHING)
 struct StringHash {
     vll hash1, hash2;
