@@ -1,9 +1,5 @@
-#include <bits/stdc++.h>
-using namespace std;
-
 struct DataStructures {
     using ll = long long;
-
     // ==================== Fenwick Tree (BIT) ====================
     struct Fenwick {
         int n;
@@ -20,7 +16,6 @@ struct DataStructures {
         }
         ll range_sum(int l, int r) { return sum(r) - sum(l - 1); }
     };
-
     // ==================== Disjoint Set Union (Union-Find) ====================
     struct DSU {
         vector<int> p, sz;
@@ -40,7 +35,6 @@ struct DataStructures {
             return true;
         }
     };
-
     // ==================== Segment Tree ====================
     struct SegmentTree {
         int n;
@@ -72,7 +66,6 @@ struct DataStructures {
         }
         ll query(int l, int r) { return query(1, 1, n, l, r); }
     };
-
     // ==================== Segment Tree with Lazy Propagation ====================
     struct SegmentTreeLazy {
         int n;
@@ -110,7 +103,6 @@ struct DataStructures {
                  + query(id << 1 | 1, mid + 1, r, u, v);
         }
     };
-
     // ==================== Sparse Table (for RMQ / GCD / etc.) ====================
     struct SparseTable {
         int n, K;
@@ -137,13 +129,11 @@ struct DataStructures {
             return f(st[k][l], st[k][r - (1 << k) + 1]);
         }
     };
-
     // ================= LICHAO TREE (Convex-Hull trick) ==============================
     struct Line {
         int a, b;
         Line(int _a = 0, int _b = (long long)1e18) : a(_a), b(_b) {}
     };
-
     struct LichaoTree {
         const int MAXX;
         vector<Line> tree;
@@ -179,7 +169,6 @@ struct DataStructures {
             else return min(ans, get(id * 2 + 1, mid, r, x));
         }
 
-        
         void addLine(Line line) {
             update(1, 1, MAXX, line);
         }
