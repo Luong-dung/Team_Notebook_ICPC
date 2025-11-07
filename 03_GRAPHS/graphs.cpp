@@ -307,17 +307,12 @@ int in[N], out[N], cnt = 0;
 void DFS(int u, int p){
     in[u] = ++cnt;
     for(auto x : adj[u]){
-        
         if(x != p){
-            
             DFS(x, u);
- 
         }
- 
     }
     out[u] = cnt;
 }
-
 /**
  * ========================================
  * HÀM SOLVE()
