@@ -8,6 +8,13 @@ struct Math {
     /*
         1/(n + 1) * (2n)C(n)
     */
+
+    // ---------- Stars and bars --------
+    /*
+        x1​ + x2 ​+ ⋯ + xd ​= s
+        0 ≤ xi​ ≤ b
+        ans =  ∑(i : 0 -> d)​ (−1)^i * (d C i​)(d−1 C s+d−1−(b+1)i​)
+    */
     // ---------- Basic ----------
     ll add(ll a, ll b) { a += b; if (a >= MOD) a -= MOD; return a; }
     ll sub(ll a, ll b) { a -= b; if (a < 0) a += MOD; return a; }
