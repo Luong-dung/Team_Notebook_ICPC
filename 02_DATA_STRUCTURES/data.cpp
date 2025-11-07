@@ -119,13 +119,9 @@ struct DataStructures {
         const int MAXX;
         vector<Line> tree;
 
-        LichaoTree(int _MAXX) : MAXX(_MAXX) {
-            tree.assign(4 * MAXX + 5, Line());
-        }
+        LichaoTree(int _MAXX) : MAXX(_MAXX) { tree.assign(4 * MAXX + 5, Line()); }
 
-        int f(const Line& line, int x) {
-            return line.a * x + line.b;
-        }
+        int f(const Line& line, int x) { return line.a * x + line.b; }
 
         void update(int id, int l, int r, Line line) {
             int mid = (l + r) / 2;
@@ -150,12 +146,7 @@ struct DataStructures {
             else return min(ans, get(id * 2 + 1, mid, r, x));
         }
 
-        void addLine(Line line) {
-            update(1, 1, MAXX, line);
-        }
-
-        int query(int x) {
-            return get(1, 1, MAXX, x);
-        }
+        void addLine(Line line) { update(1, 1, MAXX, line); }
+        int query(int x) { return get(1, 1, MAXX, x); }
     };
 };
