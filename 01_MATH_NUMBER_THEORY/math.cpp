@@ -1,20 +1,10 @@
-#include <bits/stdc++.h>
-using namespace std;
-
 struct Math {
     using ll = long long;
     const ll MOD = 1e9 + 7; // chỉnh tùy bài
     // ---------- Catalan ---------
-    /*
-        1/(n + 1) * (2n)C(n)
-    */
-
+    /*  1/(n + 1) * (2n)C(n)  */
     // ---------- Stars and bars --------
-    /*
-        x1​ + x2 ​+ ⋯ + xd ​= s
-        0 ≤ xi​ ≤ b
-        ans =  ∑(i : 0 -> d)​ (−1)^i * (d C i​)(d−1 C s+d−1−(b+1)i​)
-    */
+    /* x1​ + x2 ​+ ⋯ + xd ​= s // 0 ≤ xi​ ≤ b // ans =  ∑(i : 0 -> d)​ (−1)^i * (d C i​)(d−1 C s+d−1−(b+1)i​) */
     // ---------- Basic ----------
     ll add(ll a, ll b) { a += b; if (a >= MOD) a -= MOD; return a; }
     ll sub(ll a, ll b) { a -= b; if (a < 0) a += MOD; return a; }
@@ -29,11 +19,6 @@ struct Math {
         return res;
     }
     ll inv(ll a) { return power(a, MOD - 2); } // MOD phải là prime
-
-    // ---------- GCD & LCM ----------
-    ll gcd(ll a, ll b) { return b ? gcd(b, a % b) : a; }
-    ll lcm(ll a, ll b) { return a / gcd(a, b) * b; }
-
     // ---------- Sieve ----------
     vector<int> primes;
     vector<bool> is_prime;
@@ -47,21 +32,6 @@ struct Math {
         for (int i = 2; i <= n; i++)
             if (is_prime[i]) primes.push_back(i);
     }
-
-    // ---------- Prime Factorization ----------
-    vector<pair<ll,int>> factorize(ll n) {
-        vector<pair<ll,int>> res;
-        for (ll p = 2; p * p <= n; p++) {
-            if (n % p == 0) {
-                int cnt = 0;
-                while (n % p == 0) n /= p, cnt++;
-                res.push_back({p, cnt});
-            }
-        }
-        if (n > 1) res.push_back({n, 1});
-        return res;
-    }
-
     // ---------- Modular Combinatorics ----------
     vector<ll> fact, invfact;
     void init_combi(int n) {
@@ -76,7 +46,6 @@ struct Math {
         if (k < 0 || k > n) return 0;
         return mul(fact[n], mul(invfact[k], invfact[n - k]));
     }
-
     // ---------- Euler Phi ----------
     ll phi(ll n) {
         ll res = n;
@@ -89,7 +58,6 @@ struct Math {
         if (n > 1) res -= res / n;
         return res;
     }
-
     // ---------- Extended GCD (for non-prime MOD) ----------
     ll extgcd(ll a, ll b, ll &x, ll &y) {
         if (!b) { x = 1; y = 0; return a; }
@@ -107,9 +75,7 @@ struct Math {
         x = (x % m + m) % m;
         return x;
     }
-
-    // ---------- Miller Rabin ---------------
-
+    // ---------- Miller Rabin --------------
     bool test(long long a, long long n, long long k, long long m)
     {
         long long mod = binaryPower(a, m, n); // a^m % n
@@ -138,13 +104,10 @@ struct Math {
             m /= 2;
             k++;
         }
-
+        
         for (auto a : checkSet)
             if (!test(a, n, k, m))
                 return false;
         return true;
     }
-
-
 };
-
