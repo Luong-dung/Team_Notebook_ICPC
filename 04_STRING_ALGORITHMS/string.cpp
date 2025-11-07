@@ -1,8 +1,6 @@
 // 1. STRING HASHING (DOUBLE HASHING)
 struct StringHash {
-    vll hash1, hash2;
-    vll pow1, pow2;
-    int n;
+    vll hash1, hash2;vll pow1, pow2;int n;
 
     StringHash(const string& s) {
         n = sz(s);
@@ -279,18 +277,15 @@ void solve() {
     // StringHash text_hash(text);
     // StringHash pattern_hash(pattern);
     // pll pattern_h = pattern_hash.get_hash(0, sz(pattern) - 1);
-    // for (int i = 0; i <= sz(text) - sz(pattern); ++i) {
-    //     if (text_hash.get_hash(i, i + sz(pattern) - 1) == pattern_h) {
+    // for (int i = 0; i <= sz(text) - sz(pattern); ++i)
+    //     if (text_hash.get_hash(i, i + sz(pattern) - 1) == pattern_h)
     //         cout << "Hash match at index " << i << "\n";
-    //     }
-    // }
 
     // // 2. KMP
     // vi matches = kmp_search(text, pattern);
     // cout << "KMP matches: ";
-    // for (int idx : matches) {
+    // for (int idx : matches)
     //     cout << idx << " ";
-    // }
     // cout << "\n";
 
     // // 3. Z-Algorithm (dùng để tìm pattern)
@@ -306,17 +301,14 @@ void solve() {
     
     // // 4. Trie
     // Trie trie;
-    // trie.insert("hello");
-    // trie.insert("hell");
-    // trie.insert("world");
+    // trie.insert("hello");// trie.insert("hell");// trie.insert("world");
     // cout << "Search 'hello': " << trie.search("hello") << "\n";
     // cout << "Search 'hel': " << trie.search("hel") << "\n";
     // cout << "Count prefix 'hel': " << trie.count_prefix("hel") << "\n";
 
     // // 5. Manacher
     // pair<int, string> lps = manacher(text);
-    // cout << "Longest Palindromic Substring: " << lps.sc 
-    //      << " (length " << lps.ft << ")\n";
+    // cout << "Longest Palindromic Substring: " << lps.sc << " (length " << lps.ft << ")\n";
 
     // // 6. Suffix Array + LCP
     // build_suffix_array(text);
@@ -324,11 +316,9 @@ void solve() {
     
     // // sa[0] luôn là $ (chuỗi rỗng)
     // cout << "Suffix Array (bỏ $):\n";
-    // for (int i = 1; i < sz(sa); ++i) {
+    // for (int i = 1; i < sz(sa); ++i)
     //     cout << "Rank " << i << ": " << sa[i] << " -> " << text.substr(sa[i]) << "\n";
-    // }
     // cout << "LCP Array (bỏ $):\n";
-    // for (int i = 2; i < sz(lcp); ++i) { // Bắt đầu từ 2 để bỏ LCP($, ...)
+    // for (int i = 2; i < sz(lcp); ++i) // Bắt đầu từ 2 để bỏ LCP($, ...)
     //     cout << "LCP(" << sa[i-1] << ", " << sa[i] << ") = " << lcp[i] << "\n";
-    // }
 }
