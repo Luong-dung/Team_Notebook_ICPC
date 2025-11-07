@@ -1,28 +1,18 @@
-#include <bits/stdc++.h>
-
-using namespace std;
-
-// Định nghĩa kiểu dữ liệu
 using ll = long long;
 using pii = pair<int, int>;
 using pll = pair<ll, ll>;
 using vi = vector<int>;
 using vll = vector<ll>;
-
 // Macros
 #define all(a) (a).begin(), (a).end()
 #define pb push_back
 #define sz(x) (int)(x).size()
-
 // Hằng số
 const ll MOD1 = 1e9 + 7;
 const ll MOD2 = 1e9 + 9;
 const int BASE = 31; // Hoặc 53, 313, 331,... (số nguyên tố)
 const int MAXN = 1e6 + 5; // Kích thước tối đa, thay đổi nếu cần
-
-// ========================================
 // 1. STRING HASHING (DOUBLE HASHING)
-// ========================================
 struct StringHash {
     vll hash1, hash2;
     vll pow1, pow2;
@@ -45,7 +35,6 @@ struct StringHash {
             hash2[i + 1] = (hash2[i] * BASE + (s[i] - 'a' + 1)) % MOD2;
         }
     }
-
     // Lấy hash của chuỗi con s[l...r] (0-based)
     pll get_hash(int l, int r) {
         ll h1 = (hash1[r + 1] - (hash1[l] * pow1[r - l + 1]) % MOD1 + MOD1) % MOD1;
@@ -53,17 +42,10 @@ struct StringHash {
         return {h1, h2};
     }
 };
-
-// ========================================
 // 2. KMP (KNUTH-MORRIS-PRATT)
-// ========================================
-
 // Xây dựng mảng LPS (Longest Proper Prefix which is also Suffix)
 vi build_lps(const string& pattern) {
-    int m = sz(pattern);
-    vi lps(m, 0);
-    int len = 0; // Độ dài của lps trước đó
-    int i = 1;
+    int i = 1;int m = sz(pattern);vi lps(m, 0);int len = 0; // Độ dài của lps trước đó
 
     while (i < m) {
         if (pattern[i] == pattern[len]) {
@@ -81,18 +63,13 @@ vi build_lps(const string& pattern) {
     }
     return lps;
 }
-
 // Tìm tất cả vị trí xuất hiện của pattern trong text
 vi kmp_search(const string& text, const string& pattern) {
-    int n = sz(text);
-    int m = sz(pattern);
+    int n = sz(text);int m = sz(pattern);
     if (m == 0) return {};
+    vi lps = build_lps(pattern);vi matches;
     
-    vi lps = build_lps(pattern);
-    vi matches;
-    
-    int i = 0; // con trỏ cho text
-    int j = 0; // con trỏ cho pattern
+    int i = 0;int j = 0; // con trỏ cho pattern
 
     while (i < n) {
         if (pattern[j] == text[i]) {
@@ -112,16 +89,11 @@ vi kmp_search(const string& text, const string& pattern) {
     }
     return matches;
 }
-
-// ========================================
 // 3. Z-ALGORITHM
-// ========================================
 // Z[i] = độ dài chuỗi con dài nhất bắt đầu từ i
 //        và cũng là tiền tố của s. Z[0] = 0.
 vi z_function(const string& s) {
-    int n = sz(s);
-    vi z(n, 0);
-    int l = 0, r = 0;
+    int n = sz(s);vi z(n, 0);int l = 0, r = 0;
     for (int i = 1; i < n; ++i) {
         if (i < r) {
             z[i] = min(r - i, z[i - l]);
@@ -136,15 +108,10 @@ vi z_function(const string& s) {
     }
     return z;
 }
-
-// ========================================
 // 4. TRIE (PREFIX TREE)
-// ========================================
 struct TrieNode {
     TrieNode* children[26];
-    bool is_end_of_word;
-    int count; // Đếm số từ đi qua node này (prefix count)
-
+    bool is_end_of_word;int count; // Đếm số từ đi qua node này (prefix count)
     TrieNode() {
         is_end_of_word = false;
         count = 0;
@@ -198,10 +165,7 @@ public:
         return curr->count;
     }
 };
-
-// ========================================
 // 5. MANACHER'S ALGORITHM
-// ========================================
 // Tìm chuỗi con đối xứng dài nhất trong O(N)
 // Trả về {độ dài, chuỗi con}
 pair<int, string> manacher(const string& s) {
@@ -212,10 +176,8 @@ pair<int, string> manacher(const string& s) {
     }
     t += '@';
     
-    int n = sz(t);
+    int n = sz(t);int c = 0, r = 0; // c = tâm, r = bán kính phải
     vi p(n, 0); // p[i] = bán kính của palindrome tâm i
-    int c = 0, r = 0; // c = tâm, r = bán kính phải
-    
     for (int i = 1; i < n - 1; ++i) {
         int mirr = 2 * c - i; // i' = mirror của i
         if (i < r) {
@@ -232,34 +194,26 @@ pair<int, string> manacher(const string& s) {
         }
     }
     
-    int max_len = 0;
-    int center_idx = 0;
+    int max_len = 0;int center_idx = 0;
     for (int i = 1; i < n - 1; ++i) {
         if (p[i] > max_len) {
             max_len = p[i];
             center_idx = i;
         }
     }
-    
     // (center_idx - 1 - max_len) / 2 là vị trí bắt đầu trong chuỗi s gốc
     return {max_len, s.substr((center_idx - 1 - max_len) / 2, max_len)};
 }
-
-// ========================================
 // 6. SUFFIX ARRAY (O(N log N))
-// ========================================
 // sa[i] = vị trí bắt đầu của hậu tố nhỏ thứ i
 // pos[i] = xếp hạng của hậu tố bắt đầu tại i
-vi sa;
-vi lcp; // LCP Array
-
+vi sa;vi lcp; // LCP Array
 void build_suffix_array(const string& s) {
     string t = s + "$"; // Thêm ký tự $ nhỏ nhất
     int n = sz(t);
     sa.assign(n, 0);
     vi pos(n, 0); // p
     vi c(n, 0);   // c
-
     // k = 0 (sắp xếp theo 1 ký tự)
     {
         vector<pair<char, int>> a(n);
@@ -271,7 +225,6 @@ void build_suffix_array(const string& s) {
             c[sa[i]] = c[sa[i-1]] + (a[i].ft != a[i-1].ft);
         }
     }
-
     // k -> k + 1
     int k = 0;
     while((1 << k) < n) {
@@ -280,18 +233,14 @@ void build_suffix_array(const string& s) {
         vi pn(n), cn(n);
         vi cnt(n, 0);
 
-        for (int i = 0; i < n; ++i) {
+        for (int i = 0; i < n; ++i)
             pn[i] = (sa[i] - (1 << k) + n) % n;
-        }
-        for (int i = 0; i < n; ++i) {
+        for (int i = 0; i < n; ++i)
             cnt[c[pn[i]]]++;
-        }
-        for (int i = 1; i < n; ++i) {
+        for (int i = 1; i < n; ++i)
             cnt[i] += cnt[i-1];
-        }
-        for (int i = n - 1; i >= 0; --i) {
+        for (int i = n - 1; i >= 0; --i)
             sa[--cnt[c[pn[i]]]] = pn[i];
-        }
 
         cn[sa[0]] = 0;
         for(int i = 1; i < n; ++i) {
@@ -304,10 +253,7 @@ void build_suffix_array(const string& s) {
     }
     // sa.erase(sa.begin()); // Xóa $ nếu cần
 }
-
-// ========================================
 // 7. LCP ARRAY (O(N)) - Kasai's Algorithm
-// ========================================
 // lcp[i] = LCP(sa[i], sa[i-1])
 // Cần Suffix Array (sa) đã được build
 void build_lcp_array(const string& s) {
@@ -337,14 +283,6 @@ void build_lcp_array(const string& s) {
     }
     // lcp.erase(lcp.begin()); // Xóa lcp của $ nếu cần
 }
-
-
-/**
- * ========================================
- * HÀM SOLVE()
- * Nơi đọc input và gọi các thuật toán
- * ========================================
- */
 void solve() {
     string text, pattern;
     cin >> text >> pattern;
@@ -407,23 +345,4 @@ void solve() {
     // for (int i = 2; i < sz(lcp); ++i) { // Bắt đầu từ 2 để bỏ LCP($, ...)
     //     cout << "LCP(" << sa[i-1] << ", " << sa[i] << ") = " << lcp[i] << "\n";
     // }
-
-}
-
-/**
- * ========================================
- * HÀM MAIN()
- * ========================================
- */
-int main() {
-    fast_io();
-
-    int t = 1;
-    // cin >> t; // Đọc số lượng test cases
-
-    while (t--) {
-        solve();
-    }
-
-    return 0;
 }
