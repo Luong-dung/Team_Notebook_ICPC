@@ -69,22 +69,18 @@ struct Math {
     // ---------- Miller Rabin --------------
     bool test(long long a, long long n, long long k, long long m){
         long long mod = binaryPower(a, m, n); // a^m % n
-        if (mod == 1 || mod == n - 1)
-                return true;
+        if (mod == 1 || mod == n - 1) return true;
         for (int l = 1; l < k; ++l){
             mod = (mod * mod) % n;
-            if (mod == n - 1)
-                return true;
+            if (mod == n - 1) return true;
         }
         return false;
     }
     bool MillerRabin(long long n){
         static vector<int> checkSet = {2,3,5,7,11,13,17,19,23,29,31,37};
         for (auto a : checkSet)
-            if (n == a)
-                return true;
-        if (n < 41)
-            return false;
+            if (n == a) return true;
+        if (n < 41) return false;
 
         long long k = 0, m = n - 1;
         while (m % 2 == 0){
@@ -93,8 +89,7 @@ struct Math {
         }
         
         for (auto a : checkSet)
-            if (!test(a, n, k, m))
-                return false;
+            if (!test(a, n, k, m)) return false;
         return true;
     }
 };
