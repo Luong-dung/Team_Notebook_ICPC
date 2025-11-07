@@ -4,7 +4,10 @@ using namespace std;
 struct Math {
     using ll = long long;
     const ll MOD = 1e9 + 7; // chỉnh tùy bài
-
+    // ---------- Catalan ---------
+    /*
+        1/(n + 1) * (2n)C(n)
+    */
     // ---------- Basic ----------
     ll add(ll a, ll b) { a += b; if (a >= MOD) a -= MOD; return a; }
     ll sub(ll a, ll b) { a -= b; if (a < 0) a += MOD; return a; }
