@@ -1,48 +1,5 @@
-/**
- * ===================================================
- * TEMPLATE ADVANCED TOPICS (REST)
- * * Bao gồm:
- * 1. Matrix Exponentiation (Lũy thừa ma trận)
- * 2. Dinic's Algorithm (Max Flow)
- * ===================================================
- */
-
-#include <bits/stdc++.h>
-
-using namespace std;
-// Định nghĩa kiểu dữ liệu
-using ll = long long;
-using ld = long double;
-using pii = pair<int, int>;
-using pll = pair<ll, ll>;
-using vi = vector<int>;
-using vll = vector<ll>;
-using vpii = vector<pii>;
-using vpll = vector<pll>;
-using vvi = vector<vi>;
-
-// Macros
-#define all(a) (a).begin(), (a).end()
-#define rall(a) (a).rbegin(), (a).rend()
-#define pb push_back
-#define mp make_pair
-#define sz(x) (int)(x).size()
-#define ft first
-#define sc second
-
-// Hằng số
-const int INF = 1e9 + 7;
-const ll LINF = 1e18 + 7;
-const int MOD = 1e9 + 7;
-// const int MOD = 998244353;
-const int MAXN = 2e5 + 5; 
-
-// ========================================
 // 1. MATRIX EXPONENTIATION
-// ========================================
-// (Phụ thuộc vào binpow(a, b, m) từ file math)
 /*
-// Cần hàm binpow từ file math.h
 ll binpow(ll a, ll b, ll m) {
     a %= m;
     ll res = 1;
@@ -93,7 +50,6 @@ struct Edge {
     ll flow; // Luồng hiện tại
     int rev; // Chỉ số của cạnh ngược
 };
-
 struct Dinic {
     int n;vector<vector<Edge>> adj;vi level; // Đồ thị mức (cho BFS)
     vi ptr;   // Con trỏ (cho DFS)
