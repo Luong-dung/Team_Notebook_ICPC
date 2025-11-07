@@ -9,15 +9,6 @@ struct Math {
     ll add(ll a, ll b) { a += b; if (a >= MOD) a -= MOD; return a; }
     ll sub(ll a, ll b) { a -= b; if (a < 0) a += MOD; return a; }
     ll mul(ll a, ll b) { return (a * 1LL * b) % MOD; }
-    ll power(ll a, ll b) {
-        ll res = 1;
-        while (b) {
-            if (b & 1) res = mul(res, a);
-            a = mul(a, a);
-            b >>= 1;
-        }
-        return res;
-    }
     ll inv(ll a) { return power(a, MOD - 2); } // MOD phải là prime
     // ---------- Sieve ----------
     vector<int> primes;
